@@ -1,0 +1,22 @@
+{
+  "name": "co-toast",
+  "version": "1.0.0",
+  "description": "Modüler toast bildirim kütüphanesi (ks-toast). jsDelivr: codron-co/co-toast",
+  "main": "dist/ks-toast.js",
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codron-co/co-toast.git"
+  },
+  "keywords": [
+    "toast",
+    "notification",
+    "ks-toast",
+    "co-toast"
+  ],
+  "license": "MIT"
+}
