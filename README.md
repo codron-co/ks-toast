@@ -1,21 +1,21 @@
-# co-toast
+# ks-toast
 
 Modüler toast bildirim kütüphanesi. Konum (üst/alt/sol/sağ), ses, fotoğraf, başlık/açıklama destekler.
 
 ## jsDelivr ile kullanım
 
-GitHub repo: [codron-co/co-toast](https://github.com/codron-co/co-toast)
+GitHub repo: [codron-co/ks-toast](https://github.com/codron-co/ks-toast)
 
 **CSS** (sayfa `<head>` veya stil öncesi):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/codron-co/co-toast@main/dist/ks-toast.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/codron-co/ks-toast@main/dist/ks-toast.css">
 ```
 
 **JS** (body sonu veya bileşenlerden önce):
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/codron-co/co-toast@main/dist/ks-toast.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/codron-co/ks-toast@main/dist/ks-toast.js"></script>
 ```
 
 İsteğe bağlı: Sayfada varsayılan konum için bir container kullanıyorsanız:
