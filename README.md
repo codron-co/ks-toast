@@ -51,9 +51,6 @@ ks-toast
 ├─ dist
 │   ├─ ks-toast.js
 │   └─ ks-toast.css
-├─ src
-│   ├─ toast.js
-│   └─ toast.css
 ├─ README.md
 └─ package.json (opsiyonel)
 ```

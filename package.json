@@ -5,7 +5,6 @@
   "main": "dist/ks-toast.js",
   "files": [
     "dist",
-    "src",
     "README.md"
   ],
   "repository": {
