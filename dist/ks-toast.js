@@ -25,6 +25,16 @@
         default: 'fas fa-bell'
     };
 
+    /** icon: true iken Font Awesome yokken de görünsün diye Unicode / sistem fontu. */
+    var TYPE_GLYPHS = {
+        success: '\u2714',
+        error: '\u2716',
+        danger: '\u2716',
+        warning: '\u26A0',
+        info: '\u2139',
+        default: '\u2022'
+    };
+
     var VALID_TYPES = ['success', 'error', 'danger', 'warning', 'info', 'default'];
     var DIALOG_HOST_CLASS = 'ks-toast-dialog-host';
 
@@ -198,9 +208,16 @@
                 var iconEl = document.createElement('span');
                 iconEl.className = 'ks-toast__icon';
                 iconEl.setAttribute('aria-hidden', 'true');
-                var i = document.createElement('i');
-                i.className = iconClass;
-                iconEl.appendChild(i);
+                if (options.icon === true) {
+                    var g = document.createElement('span');
+                    g.className = 'ks-toast__glyph ks-toast__glyph--' + options.type;
+                    g.textContent = TYPE_GLYPHS[options.type] || TYPE_GLYPHS.default;
+                    iconEl.appendChild(g);
+                } else {
+                    var i = document.createElement('i');
+                    i.className = iconClass;
+                    iconEl.appendChild(i);
+                }
                 inner.appendChild(iconEl);
                 toast.classList.add('ks-toast--has-icon');
             }
@@ -314,6 +331,79 @@
         return toast;
     }
 
+    /**
+     * window.alert → KsToast (toast senkron değildir; gerçek alert için ksNativeAlert kullanın).
+     * @param {object} [options]
+     * @param {'tr'|'en'} [options.locale='tr'] — metne göre success/error/warning tahmini
+     * @param {function(string): 'success'|'error'|'warning'|'info'} [options.classify] — locale yerine özel sınıflandırma
+     */
+    function installAlertBridge(options) {
+        options = options || {};
+        if (global.__ksToastAlertBridged) {
+            return;
+        }
+        global.__ksToastAlertBridged = true;
+
+        var nativeAlert = global.alert.bind(global);
+        global.ksNativeAlert = nativeAlert;
+
+        var locale = options.locale || 'tr';
+        var customClassify = typeof options.classify === 'function' ? options.classify : null;
+
+        function classifyLocale(text) {
+            var lower = text.toLowerCase();
+            if (locale === 'en') {
+                var errEn =
+                    /error|failed|failure|invalid|denied|blocked|cancelled|canceled|not found|access denied|required|missing|wrong|unable|could not|cannot|can't|no connection/i.test(
+                        text
+                    );
+                var okEn =
+                    /saved|success|completed|created|deleted|updated|copied|added|sent|downloaded|approved|thank you|done|finished/i.test(lower);
+                if (errEn && !okEn) return 'error';
+                if (okEn && !errEn) return 'success';
+                if (/^\s*warning\b/i.test(text) || /\bcaution\b|\battention\b|\bcareful\b/i.test(lower)) return 'warning';
+                return 'info';
+            }
+            var looksError =
+                /hata|başarısız|engellendi|olmadı|silinemedi|yüklenemedi|bağlantı|geçersiz|uyarı|dikkat|iptal|reddedildi|bulunamadı|erişim yok|zorunlu|eksik|yanlış/i.test(
+                    text
+                );
+            var looksSuccess =
+                /kaydedildi|başarıyla|tamamlandı|oluşturuldu|silindi|güncellendi|kopyalandı|eklendi|gönderildi|indirildi|onaylandı|teşekkür/i.test(
+                    lower
+                );
+            if (looksError && !looksSuccess) return 'error';
+            if (looksSuccess && !looksError) return 'success';
+            if (/^\s*uyarı\b/i.test(text) || lower.indexOf('dikkat') !== -1) return 'warning';
+            return 'info';
+        }
+
+        function routeAlertToToast(message) {
+            if (!global.KsToast || message == null) {
+                return false;
+            }
+            var text = String(message);
+            var opts = { duration: Math.min(5200, 900 + text.length * 32) };
+            if (text === '') {
+                global.KsToast.info('', opts);
+                return true;
+            }
+            var kind = customClassify ? customClassify(text) : classifyLocale(text);
+            if (kind === 'error') global.KsToast.error(text, opts);
+            else if (kind === 'success') global.KsToast.success(text, opts);
+            else if (kind === 'warning') global.KsToast.warning(text, opts);
+            else global.KsToast.info(text, opts);
+            return true;
+        }
+
+        global.alert = function (message) {
+            if (routeAlertToToast(message)) {
+                return;
+            }
+            nativeAlert(message);
+        };
+    }
+
     global.KsToast = {
         show: show,
         /** Kısayollar */
@@ -322,8 +412,19 @@
         danger: function (msg, opts) { return show(msg, Object.assign({ type: 'danger' }, opts)); },
         warning: function (msg, opts) { return show(msg, Object.assign({ type: 'warning' }, opts)); },
         info: function (msg, opts) { return show(msg, Object.assign({ type: 'info' }, opts)); },
-        default: function (msg, opts) { return show(msg, Object.assign({ type: 'default' }, opts)); }
+        default: function (msg, opts) { return show(msg, Object.assign({ type: 'default' }, opts)); },
+        installAlertBridge: installAlertBridge
     };
     /** camelCase alias (projeler arası uyumluluk) */
     global.ksToast = global.KsToast;
+
+    try {
+        var cs = typeof document !== 'undefined' ? document.currentScript : null;
+        if (cs && cs.hasAttribute && cs.hasAttribute('data-alert-bridge')) {
+            var bridgeLocale = cs.getAttribute('data-alert-bridge');
+            installAlertBridge({
+                locale: bridgeLocale && bridgeLocale.trim() ? bridgeLocale.trim() : 'tr'
+            });
+        }
+    } catch (eBridge) {}
 })(typeof window !== 'undefined' ? window : this);
