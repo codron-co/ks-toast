@@ -1,30 +1,29 @@
 # ks-toast
 
-Modüler toast bildirim kütüphanesi. Konum (üst/alt/sol/sağ), ses, fotoğraf, başlık/açıklama destekler.
+Modüler toast bildirim kütüphanesi. Konum (üst/alt/sol/sağ), ses, fotoğraf, başlık/açıklama destekler. Açık `<dialog>` (modal) üzerinde de doğru katmanda görünür (`ks-toast-dialog-host`).
 
-## jsDelivr ile kullanım
+**GitHub:** [codron-co/ks-toast](https://github.com/codron-co/ks-toast)
 
-GitHub repo: [codron-co/ks-toast](https://github.com/codron-co/ks-toast)
+## CDN (jsDelivr)
 
-**CSS** (sayfa `<head>` veya stil öncesi):
+Paket kökü (dosya listesi):
 
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/codron-co/ks-toast@main/dist/ks-toast.css">
-```
+**https://cdn.jsdelivr.net/gh/codron-co/ks-toast/**
 
-**JS** (body sonu veya bileşenlerden önce):
+Üretim dosyaları (`dist/`; dal adını ihtiyaca göre `master` / `main` ile değiştirin):
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/codron-co/ks-toast@main/dist/ks-toast.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/codron-co/ks-toast@master/dist/ks-toast.css">
+<script src="https://cdn.jsdelivr.net/gh/codron-co/ks-toast@master/dist/ks-toast.js" defer></script>
 ```
 
-İsteğe bağlı: Sayfada varsayılan konum için bir container kullanıyorsanız:
+İsteğe bağlı — varsayılan konum (`top-center`) için sayfada önceden container:
 
 ```html
 <div id="ks-toast-container" class="ks-toast-container" aria-live="polite"></div>
 ```
 
-## Kullanım
+## API
 
 ```javascript
 // Kısayollar
@@ -33,7 +32,10 @@ KsToast.error('Bir hata oluştu.');
 KsToast.warning('Dikkat!');
 KsToast.info('Bilgi mesajı.');
 
-// Genel API
+// camelCase alias (aynı nesne)
+ksToast.success('Tamam.');
+
+// Genel
 KsToast.show('Mesaj', 'success');
 KsToast.show({ message: 'Başlık', title: 'Bilgi', description: 'Açıklama', type: 'info' });
 KsToast.show({ message: 'Yeni mesaj', image: '/path/to/avatar.jpg', position: 'top-right' });
@@ -44,6 +46,8 @@ KsToast.show({ message: 'Bildirim', sound: '/path/to/notification.mp3', position
 
 **Tipler:** `success` | `error` | `danger` | `warning` | `info` | `default`
 
+Font Awesome sınıfları varsayılan ikonlar için kullanılır (`fas fa-check-circle` vb.); projede uygun FA sürümünün yüklü olduğundan emin olun.
+
 ## Klasör yapısı
 
 ```
@@ -52,7 +56,7 @@ ks-toast
 │   ├─ ks-toast.js
 │   └─ ks-toast.css
 ├─ README.md
-└─ package.json (opsiyonel)
+└─ package.json
 ```
 
 ## Lisans

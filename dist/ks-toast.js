@@ -26,6 +26,47 @@
     };
 
     var VALID_TYPES = ['success', 'error', 'danger', 'warning', 'info', 'default'];
+    var DIALOG_HOST_CLASS = 'ks-toast-dialog-host';
+
+    function getOpenModalHost() {
+        var modal = document.querySelector('dialog:modal');
+        if (!modal) return null;
+        var host = modal.getElementsByClassName(DIALOG_HOST_CLASS)[0];
+        if (!host) {
+            host = document.createElement('div');
+            host.className = DIALOG_HOST_CLASS;
+            host.setAttribute('aria-hidden', 'true');
+            modal.appendChild(host);
+        }
+        return host;
+    }
+
+    /** Açık showModal() dialog yoksa body; varsa top layer içinde host (tüm mevcut z-index’i aşar). */
+    function getToastHostParent() {
+        return getOpenModalHost() || document.body;
+    }
+
+    function reparentToastsFromDialog(dialogEl) {
+        if (!dialogEl || dialogEl.tagName !== 'DIALOG') return;
+        var host = dialogEl.getElementsByClassName(DIALOG_HOST_CLASS)[0];
+        if (!host) return;
+        var wraps = host.querySelectorAll('.ks-toast-wrapper');
+        for (var i = 0; i < wraps.length; i++) {
+            document.body.appendChild(wraps[i]);
+        }
+        if (host.parentNode) {
+            host.parentNode.removeChild(host);
+        }
+    }
+
+    if (!global.__ksToastDialogReparent) {
+        global.__ksToastDialogReparent = true;
+        document.addEventListener('close', function (e) {
+            if (e.target && e.target.tagName === 'DIALOG') {
+                reparentToastsFromDialog(e.target);
+            }
+        }, true);
+    }
 
     function getWrapper(position) {
         position = POSITIONS.indexOf(position) !== -1 ? position : DEFAULT_POSITION;
@@ -72,6 +113,10 @@
                     }
                 }, HOVER_LEAVE_DELAY);
             });
+        }
+        var toastHost = getToastHostParent();
+        if (wrapper.parentNode !== toastHost) {
+            toastHost.appendChild(wrapper);
         }
         return wrapper;
     }
@@ -279,4 +324,6 @@
         info: function (msg, opts) { return show(msg, Object.assign({ type: 'info' }, opts)); },
         default: function (msg, opts) { return show(msg, Object.assign({ type: 'default' }, opts)); }
     };
+    /** camelCase alias (projeler arası uyumluluk) */
+    global.ksToast = global.KsToast;
 })(typeof window !== 'undefined' ? window : this);

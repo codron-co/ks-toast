@@ -7,6 +7,19 @@
 
 :root {
     --ks-toast-step: 8px;
+    /* Tüm modallar, sticky header, drawer vb. üzerinde kalsın */
+    --ks-toast-z-index: 2147483000;
+}
+
+/*
+ * <dialog showModal()> Top Layer: body’deki en yüksek z-index bile modalın altında kalır.
+ * Açık :modal varken toast sarmalayıcıları .ks-toast-dialog-host içine taşınır; host, panel+scrim üstünde.
+ */
+.ks-toast-dialog-host {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
 }
 
 /* Wrapper: varsayılan üst orta */
@@ -15,7 +28,7 @@
     top: 16px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 9999;
+    z-index: var(--ks-toast-z-index);
     width: 100%;
     max-width: 420px;
     padding: 0 12px;
@@ -521,6 +534,7 @@
 .ks-toast__message {
     font-size: 14px;
     line-height: 1.4;
+    white-space: pre-line;
 }
 
 .ks-toast__description {
@@ -528,6 +542,7 @@
     line-height: 1.35;
     margin-top: 4px;
     opacity: 0.9;
+    white-space: pre-line;
 }
 
 /* Küçük fotoğraflı toast */
