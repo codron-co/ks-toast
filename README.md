@@ -19,6 +19,13 @@ Modüler toast bildirim kütüphanesi. Konum (üst/alt/sol/sağ), ses, fotoğraf
 - **Yığın durumu sadece sarmalayıcı sınıfı:** `mouseenter` / `mouseleave` ile `ks-toast--stack-expanded` (CSS `:hover` ve `.ks-toast-container:hover` kaldırıldı). Alttaki bildirimlerin üstüne gelince y ekseninde zıplama büyük ölçüde biter.
 - **Toast** `transition: none` (margin/padding animasyonu yok).
 
+### 1.0.4
+
+- **2+ toast “deck” (collapsed):** İmleç yığında değilken tüm konumlarda (üst/alt) eski yığın: üstteki(ler) küçülür, opaklık azalır, `nth-last-child(4+)` gizli.
+- **Genişletilmiş yığın (expanded):** `mouseenter` ile `ks-toast--stack-expanded`; `flex` `gap` (`--ks-toast-stack-gap`, varsayılan 18px) ve tam `scale(1)` / opaklık. `mouseleave` sınıfı kaldırır; son toast silinince sınıf temizlenir.
+- **Üst konum:** 2+ toast ve genişletilmişte `min-height: 70vh` (tıklanabilir alan).
+- Kaynak: bu mantık artık yalnızca `dist/` içinde; tüketen projeler vendor’a `dist` dosyalarını kopyalayarak güncellemeli.
+
 ## CDN (jsDelivr)
 
 Paket kökü (dosya listesi):

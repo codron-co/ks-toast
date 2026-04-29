@@ -118,6 +118,7 @@
         if (!wrapper.hasAttribute('data-ks-toast-bound')) {
             wrapper.setAttribute('data-ks-toast-bound', '1');
             wrapper.addEventListener('mouseenter', function () {
+                wrapper.classList.add('ks-toast--stack-expanded');
                 if (wrapper._leaveTimer) {
                     clearTimeout(wrapper._leaveTimer);
                     wrapper._leaveTimer = null;
@@ -130,6 +131,7 @@
             });
             wrapper.addEventListener('mouseleave', function (e) {
                 if (!pointerExitedElement(wrapper, e)) return;
+                wrapper.classList.remove('ks-toast--stack-expanded');
                 var toasts = [].slice.call(wrapper.querySelectorAll('.ks-toast'));
                 if (wrapper._leaveTimer) {
                     clearTimeout(wrapper._leaveTimer);
@@ -167,7 +169,7 @@
                     el.parentNode.removeChild(el);
                     var wrapper = container.closest && container.closest('.ks-toast-wrapper');
                     if (wrapper && container.querySelectorAll('.ks-toast').length === 0) {
-                        wrapper.classList.remove('has-toasts');
+                        wrapper.classList.remove('has-toasts', 'ks-toast--stack-expanded');
                     }
                 }
             }, 200);
