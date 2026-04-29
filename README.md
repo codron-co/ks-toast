@@ -7,9 +7,13 @@ Modüler toast bildirim kütüphanesi. Konum (üst/alt/sol/sağ), ses, fotoğraf
 ### 1.0.1
 
 - **Ortalama:** `top-center` / `bottom-center` için `left: 50%` + `translateX(-50%)` kaldırıldı; `left`/`right` + yatay `margin: auto` (scrollbar / subpixel kayma riski azalır).
-- **Hover yığını:** İmleç üzerindeyken yığındaki `transform` / `margin` değişimleri kaldırıldı; titreme ve X üzerinde zıplama gibi geri bildirim döngüleri engellenir. `min-height: 70vh` hover alanı kaldırıldı.
 - **perspective:** Yığın konteynerinde `400px` → `none`.
-- `--ks-toast-step` kaldırıldı (yalnızca kaldırılan hover kurallarında kullanılıyordu).
+
+### 1.0.2
+
+- **Kapat (×):** `position: absolute` + `transform: translateY(-50%)` kaldırıldı; toast `display: flex` + kapat butonu satırda `flex` ile hizalanıyor (üst yığında `scale` + çocuk `transform` birikmesinden kaynaklanan titreme giderildi).
+- **Yığın açılması:** Üst/alt konumlarda hover’da tüm satırlar yine aşağı/yukarı açılır; `--ks-toast-step` geri eklendi.
+- **Geçiş:** Toast’ta `transform` artık `transition` içinde değil (sadece opacity, visibility, max-height, margin, padding) — açılırken 350ms kayma yok, imleç hizası daha stabil.
 
 ## CDN (jsDelivr)
 
