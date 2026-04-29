@@ -4,6 +4,13 @@ Modüler toast bildirim kütüphanesi. Konum (üst/alt/sol/sağ), ses, fotoğraf
 
 **GitHub:** [codron-co/ks-toast](https://github.com/codron-co/ks-toast)
 
+### 1.0.1
+
+- **Ortalama:** `top-center` / `bottom-center` için `left: 50%` + `translateX(-50%)` kaldırıldı; `left`/`right` + yatay `margin: auto` (scrollbar / subpixel kayma riski azalır).
+- **Hover yığını:** İmleç üzerindeyken yığındaki `transform` / `margin` değişimleri kaldırıldı; titreme ve X üzerinde zıplama gibi geri bildirim döngüleri engellenir. `min-height: 70vh` hover alanı kaldırıldı.
+- **perspective:** Yığın konteynerinde `400px` → `none`.
+- `--ks-toast-step` kaldırıldı (yalnızca kaldırılan hover kurallarında kullanılıyordu).
+
 ## CDN (jsDelivr)
 
 Paket kökü (dosya listesi):

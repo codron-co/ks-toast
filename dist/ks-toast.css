@@ -2,11 +2,10 @@
  * KS Toast – tüm bildirimler için ortak bileşen.
  * Varyantlar: success, error, danger, warning, info, default.
  * İkon, başlık, açıklama, fotoğraf, link, buton; konum: üst/alt orta/sol/sağ.
- * Hover aralığı: --ks-toast-step.
+ * Yığın: imleç üzerindeyken ekle transform değişmez (hover’da titreme/scrollbar yok).
  */
 
 :root {
-    --ks-toast-step: 8px;
     /* Tüm modallar, sticky header, drawer vb. üzerinde kalsın */
     --ks-toast-z-index: 2147483000;
 }
@@ -22,12 +21,9 @@
     pointer-events: none;
 }
 
-/* Wrapper: varsayılan üst orta */
+/* Sarmalayıcı: konum sınıfları (üst-orta/alt-orta: left:50% + translateX yerine margin — scrollbar / subpixel) */
 .ks-toast-wrapper {
     position: fixed;
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%);
     z-index: var(--ks-toast-z-index);
     width: 100%;
     max-width: 420px;
@@ -35,24 +31,34 @@
     pointer-events: none;
 }
 
-/* Konum modifikatörleri: üst/sağ/sol/alt */
+.ks-toast-wrapper--top-center {
+    top: 16px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .ks-toast-wrapper--top-left {
+    top: 16px;
     left: 16px;
-    transform: none;
+    right: auto;
 }
 
 .ks-toast-wrapper--top-right {
+    top: 16px;
     left: auto;
     right: 16px;
-    transform: none;
 }
 
 /* Alt konumlar: içerik alta yapışık, taşma üstten kesilir, scroll yok */
 .ks-toast-wrapper--bottom-center {
     top: auto;
     bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     max-height: calc(100vh - 32px);
     overflow: hidden;
     display: flex;
@@ -156,13 +162,6 @@
     pointer-events: auto;
 }
 
-/* Sadece üst konumlarda hover'da alan aç (alt konumda min-height boşluk yaratır) */
-.ks-toast-wrapper--top-center:hover,
-.ks-toast-wrapper--top-left:hover,
-.ks-toast-wrapper--top-right:hover {
-    min-height: 70vh;
-}
-
 .ks-toast-container {
     position: relative;
     display: flex;
@@ -170,7 +169,8 @@
     align-items: center;
     max-width: 90vw;
     pointer-events: none;
-    perspective: 400px;
+    /* 3B perspective + hover’da yığında transform, imleç altında oynamaya yol açabiliyor */
+    perspective: none;
 }
 
 .ks-toast-wrapper--top-left .ks-toast-container,
@@ -241,177 +241,6 @@
     border: none;
     min-height: 0;
 }
-
-/* Hover: sadece üst konumlar (alt kendi hover kurallarında) */
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-center .ks-toast-container:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-left .ks-toast-container:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-right .ks-toast-container:hover .ks-toast:nth-last-child(1) {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-}
-
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-center .ks-toast-container:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-left .ks-toast-container:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-right .ks-toast-container:hover .ks-toast:nth-last-child(n+2) {
-    margin-bottom: 0;
-    opacity: 1;
-}
-
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-center .ks-toast-container:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-left .ks-toast-container:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-right .ks-toast-container:hover .ks-toast:nth-last-child(n+4) {
-    visibility: visible;
-    max-height: 120px;
-    overflow: visible;
-    padding: 12px 44px 12px 16px;
-    min-height: auto;
-}
-
-/* Sadece üst konumlar: hover'da aşağı doğru stack (pozitif translateY). Alt konumlara uygulanmaz. */
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(2),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(2),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(2) { transform: scale(1) translateY(calc(1 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(3),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(3),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(3) { transform: scale(1) translateY(calc(2 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(4),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(4),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(4) { transform: scale(1) translateY(calc(3 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(5),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(5),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(5) { transform: scale(1) translateY(calc(4 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(6),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(6),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(6) { transform: scale(1) translateY(calc(5 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(7),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(7),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(7) { transform: scale(1) translateY(calc(6 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(8),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(8),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(8) { transform: scale(1) translateY(calc(7 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(9),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(9),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(9) { transform: scale(1) translateY(calc(8 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(10),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(10),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(10) { transform: scale(1) translateY(calc(9 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(11),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(11),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(11) { transform: scale(1) translateY(calc(10 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(12),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(12),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(12) { transform: scale(1) translateY(calc(11 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(13),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(13),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(13) { transform: scale(1) translateY(calc(12 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(14),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(14),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(14) { transform: scale(1) translateY(calc(13 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(15),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(15),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(15) { transform: scale(1) translateY(calc(14 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(16),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(16),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(16) { transform: scale(1) translateY(calc(15 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(17),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(17),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(17) { transform: scale(1) translateY(calc(16 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(18),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(18),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(18) { transform: scale(1) translateY(calc(17 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(n+19),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(n+19),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(n+19) { transform: scale(1) translateY(calc(18 * var(--ks-toast-step))); }
-
-/* Alt konumlar: hover'da hepsini göster (margin, opacity, visibility) */
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(1) {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-}
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(n+2) {
-    margin-bottom: 0;
-    opacity: 1;
-}
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(n+4) {
-    visibility: visible;
-    max-height: 120px;
-    overflow: visible;
-    padding: 12px 44px 12px 16px;
-    min-height: auto;
-}
-
-/* Alt konumlar: hover'da yukarı doğru stack (negatif translateY) */
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(2),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(2),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(2) { transform: scale(1) translateY(calc(-1 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(3),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(3),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(3) { transform: scale(1) translateY(calc(-2 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(4),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(4),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(4) { transform: scale(1) translateY(calc(-3 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(5),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(5),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(5) { transform: scale(1) translateY(calc(-4 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(6),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(6),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(6) { transform: scale(1) translateY(calc(-5 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(7),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(7),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(7) { transform: scale(1) translateY(calc(-6 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(8),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(8),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(8) { transform: scale(1) translateY(calc(-7 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(9),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(9),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(9) { transform: scale(1) translateY(calc(-8 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(n+10),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(n+10),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(n+10) { transform: scale(1) translateY(calc(-9 * var(--ks-toast-step))); }
-
-/* Alt konumlar: hover'da translateY layout boşluğunu kapat (negatif margin-bottom) */
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child) { margin-bottom: calc(-1 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child) { margin-bottom: calc(-3 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child) { margin-bottom: calc(-6 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child) { margin-bottom: calc(-10 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child) { margin-bottom: calc(-15 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child) { margin-bottom: calc(-21 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child) { margin-bottom: calc(-28 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child) { margin-bottom: calc(-36 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child) { margin-bottom: calc(-45 * var(--ks-toast-step)); }
 
 /* ---------- Varyantlar: success, error, danger, warning, info, default ---------- */
 .ks-toast-container .ks-toast--success {
