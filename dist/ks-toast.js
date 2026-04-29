@@ -78,6 +78,20 @@
         }, true);
     }
 
+    function pointerExitedElement(el, e) {
+        var to = e && e.relatedTarget;
+        if (to == null) return true;
+        if (to === el) return false;
+        if (el.contains && el.contains(to)) return false;
+        if (to.nodeType === 1 && typeof to.getRootNode === 'function') {
+            var root = to.getRootNode();
+            if (root && root !== document && root.host && el.contains && el.contains(root.host)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     function getWrapper(position) {
         position = POSITIONS.indexOf(position) !== -1 ? position : DEFAULT_POSITION;
         var id = 'ks-toast-wrapper-' + position;
@@ -103,6 +117,7 @@
         if (!wrapper.hasAttribute('data-ks-toast-bound')) {
             wrapper.setAttribute('data-ks-toast-bound', '1');
             wrapper.addEventListener('mouseenter', function () {
+                wrapper._enterGen = (wrapper._enterGen | 0) + 1;
                 if (wrapper._leaveTimer) {
                     clearTimeout(wrapper._leaveTimer);
                     wrapper._leaveTimer = null;
@@ -114,16 +129,29 @@
                     toasts[i]._timer = null;
                 }
             });
-            wrapper.addEventListener('mouseleave', function () {
-                wrapper.classList.remove('ks-toast--stack-expanded');
-                var toasts = [].slice.call(wrapper.querySelectorAll('.ks-toast'));
-                wrapper._leaveTimer = setTimeout(function () {
-                    wrapper._leaveTimer = null;
-                    for (var i = 0; i < toasts.length; i++) {
-                        if (toasts[i]._timer) clearTimeout(toasts[i]._timer);
-                        hideToast(toasts[i]);
-                    }
-                }, HOVER_LEAVE_DELAY);
+            wrapper.addEventListener('mouseleave', function (e) {
+                if (!pointerExitedElement(wrapper, e)) return;
+                var g = (wrapper._enterGen | 0);
+                requestAnimationFrame(function () {
+                    if (g !== (wrapper._enterGen | 0)) return;
+                    requestAnimationFrame(function () {
+                        if (g !== (wrapper._enterGen | 0)) return;
+                        if (typeof wrapper.matches === 'function' && wrapper.matches(':hover')) return;
+                        wrapper.classList.remove('ks-toast--stack-expanded');
+                        var toasts = [].slice.call(wrapper.querySelectorAll('.ks-toast'));
+                        if (wrapper._leaveTimer) {
+                            clearTimeout(wrapper._leaveTimer);
+                            wrapper._leaveTimer = null;
+                        }
+                        wrapper._leaveTimer = setTimeout(function () {
+                            wrapper._leaveTimer = null;
+                            for (var i = 0; i < toasts.length; i++) {
+                                if (toasts[i]._timer) clearTimeout(toasts[i]._timer);
+                                hideToast(toasts[i]);
+                            }
+                        }, HOVER_LEAVE_DELAY);
+                    });
+                });
             });
         }
         var toastHost = getToastHostParent();
