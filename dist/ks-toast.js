@@ -107,6 +107,7 @@
                     clearTimeout(wrapper._leaveTimer);
                     wrapper._leaveTimer = null;
                 }
+                wrapper.classList.add('ks-toast--stack-expanded');
                 var toasts = wrapper.querySelectorAll('.ks-toast');
                 for (var i = 0; i < toasts.length; i++) {
                     if (toasts[i]._timer) clearTimeout(toasts[i]._timer);
@@ -114,6 +115,7 @@
                 }
             });
             wrapper.addEventListener('mouseleave', function () {
+                wrapper.classList.remove('ks-toast--stack-expanded');
                 var toasts = [].slice.call(wrapper.querySelectorAll('.ks-toast'));
                 wrapper._leaveTimer = setTimeout(function () {
                     wrapper._leaveTimer = null;

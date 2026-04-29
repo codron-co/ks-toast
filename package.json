@@ -1,6 +1,6 @@
 {
   "name": "ks-toast",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Modüler toast bildirim kütüphanesi.",
   "main": "dist/ks-toast.js",
   "files": [

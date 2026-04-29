@@ -164,10 +164,10 @@
     pointer-events: auto;
 }
 
-/* Üst konum: geniş dikey hit alanı (yığın + alt boşluk); yatay margin-ortada kaldı */
-.ks-toast-wrapper--top-center:hover,
-.ks-toast-wrapper--top-left:hover,
-.ks-toast-wrapper--top-right:hover {
+/* Üst konum: imleç sarmalayıcıdayken (JS: ks-toast--stack-expanded) dikey alan */
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded,
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded,
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded {
     min-height: 70vh;
 }
 
@@ -195,8 +195,8 @@
 .ks-toast-container .ks-toast {
     pointer-events: auto;
     margin: 0;
-    /* transform geçişi yok: yığın/hover anında konum “kaymış imleç” üretmesin */
-    transition: opacity 0.2s ease, visibility 0.2s ease, max-height 0.2s ease, margin 0.2s ease, padding 0.2s ease;
+    /* Y sarsıntısı: margin/padding/max-height geçişi yok; sarmalayıcı sınıfı (JS) tek kaynak */
+    transition: none;
     transform-origin: top center;
     position: relative;
     overflow: hidden;
@@ -263,33 +263,24 @@
     min-height: 0;
 }
 
-/* Üst: hover’da yığılı tüm satırlar aşağı açılır (scale(1) + adım translateY) */
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-center .ks-toast-container:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-left .ks-toast-container:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-right .ks-toast-container:hover .ks-toast:nth-last-child(1) {
+/* Üst: yığın açık (yalnız sarmalayıcı .ks-toast--stack-expanded — :hover yok, alt satıra geçerken titreme yok) */
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(1),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(1),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(1) {
     transform: scale(1) translateY(0);
     opacity: 1;
 }
 
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-center .ks-toast-container:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-left .ks-toast-container:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-right .ks-toast-container:hover .ks-toast:nth-last-child(n+2) {
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(n+2),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(n+2),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(n+2) {
     margin-bottom: 0;
     opacity: 1;
 }
 
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-center .ks-toast-container:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-left .ks-toast-container:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-right .ks-toast-container:hover .ks-toast:nth-last-child(n+4) {
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(n+4),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(n+4),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(n+4) {
     visibility: visible;
     max-height: 120px;
     overflow: visible;
@@ -297,138 +288,138 @@
     min-height: auto;
 }
 
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(2),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(2),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(2) { transform: scale(1) translateY(calc(1 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(3),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(3),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(3) { transform: scale(1) translateY(calc(2 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(4),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(4),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(4) { transform: scale(1) translateY(calc(3 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(5),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(5),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(5) { transform: scale(1) translateY(calc(4 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(6),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(6),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(6) { transform: scale(1) translateY(calc(5 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(7),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(7),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(7) { transform: scale(1) translateY(calc(6 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(8),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(8),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(8) { transform: scale(1) translateY(calc(7 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(9),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(9),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(9) { transform: scale(1) translateY(calc(8 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(10),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(10),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(10) { transform: scale(1) translateY(calc(9 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(11),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(11),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(11) { transform: scale(1) translateY(calc(10 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(12),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(12),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(12) { transform: scale(1) translateY(calc(11 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(13),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(13),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(13) { transform: scale(1) translateY(calc(12 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(14),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(14),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(14) { transform: scale(1) translateY(calc(13 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(15),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(15),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(15) { transform: scale(1) translateY(calc(14 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(16),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(16),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(16) { transform: scale(1) translateY(calc(15 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(17),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(17),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(17) { transform: scale(1) translateY(calc(16 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(18),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(18),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(18) { transform: scale(1) translateY(calc(17 * var(--ks-toast-step))); }
-.ks-toast-wrapper--top-center:hover .ks-toast:nth-last-child(n+19),
-.ks-toast-wrapper--top-left:hover .ks-toast:nth-last-child(n+19),
-.ks-toast-wrapper--top-right:hover .ks-toast:nth-last-child(n+19) { transform: scale(1) translateY(calc(18 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(2),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(2),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(2) { transform: scale(1) translateY(calc(1 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(3),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(3),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(3) { transform: scale(1) translateY(calc(2 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(4),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(4),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(4) { transform: scale(1) translateY(calc(3 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(5),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(5),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(5) { transform: scale(1) translateY(calc(4 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(6),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(6),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(6) { transform: scale(1) translateY(calc(5 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(7),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(7),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(7) { transform: scale(1) translateY(calc(6 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(8),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(8),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(8) { transform: scale(1) translateY(calc(7 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(9),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(9),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(9) { transform: scale(1) translateY(calc(8 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(10),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(10),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(10) { transform: scale(1) translateY(calc(9 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(11),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(11),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(11) { transform: scale(1) translateY(calc(10 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(12),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(12),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(12) { transform: scale(1) translateY(calc(11 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(13),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(13),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(13) { transform: scale(1) translateY(calc(12 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(14),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(14),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(14) { transform: scale(1) translateY(calc(13 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(15),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(15),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(15) { transform: scale(1) translateY(calc(14 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(16),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(16),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(16) { transform: scale(1) translateY(calc(15 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(17),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(17),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(17) { transform: scale(1) translateY(calc(16 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(18),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(18),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(18) { transform: scale(1) translateY(calc(17 * var(--ks-toast-step))); }
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast:nth-last-child(n+19),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast:nth-last-child(n+19),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast:nth-last-child(n+19) { transform: scale(1) translateY(calc(18 * var(--ks-toast-step))); }
 
 /* Alt konumlar: hover’da tüm yığın açılır */
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(1) {
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(1),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(1),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(1) {
     transform: scale(1) translateY(0);
     opacity: 1;
 }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(n+2) {
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(n+2),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(n+2),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(n+2) {
     margin-bottom: 0;
     opacity: 1;
 }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(n+4) {
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(n+4),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(n+4),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(n+4) {
     visibility: visible;
     max-height: 120px;
     overflow: visible;
     padding: 12px 12px 12px 16px;
     min-height: auto;
 }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(2),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(2),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(2) { transform: scale(1) translateY(calc(-1 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(3),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(3),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(3) { transform: scale(1) translateY(calc(-2 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(4),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(4),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(4) { transform: scale(1) translateY(calc(-3 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(5),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(5),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(5) { transform: scale(1) translateY(calc(-4 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(6),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(6),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(6) { transform: scale(1) translateY(calc(-5 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(7),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(7),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(7) { transform: scale(1) translateY(calc(-6 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(8),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(8),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(8) { transform: scale(1) translateY(calc(-7 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(9),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(9),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(9) { transform: scale(1) translateY(calc(-8 * var(--ks-toast-step))); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast:nth-last-child(n+10),
-.ks-toast-wrapper--bottom-left:hover .ks-toast:nth-last-child(n+10),
-.ks-toast-wrapper--bottom-right:hover .ks-toast:nth-last-child(n+10) { transform: scale(1) translateY(calc(-9 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(2),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(2),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(2) { transform: scale(1) translateY(calc(-1 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(3),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(3),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(3) { transform: scale(1) translateY(calc(-2 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(4),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(4),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(4) { transform: scale(1) translateY(calc(-3 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(5),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(5),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(5) { transform: scale(1) translateY(calc(-4 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(6),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(6),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(6) { transform: scale(1) translateY(calc(-5 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(7),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(7),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(7) { transform: scale(1) translateY(calc(-6 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(8),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(8),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(8) { transform: scale(1) translateY(calc(-7 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(9),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(9),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(9) { transform: scale(1) translateY(calc(-8 * var(--ks-toast-step))); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast:nth-last-child(n+10),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast:nth-last-child(n+10),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast:nth-last-child(n+10) { transform: scale(1) translateY(calc(-9 * var(--ks-toast-step))); }
 
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child) { margin-bottom: calc(-1 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child) { margin-bottom: calc(-3 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child) { margin-bottom: calc(-6 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child) { margin-bottom: calc(-10 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child) { margin-bottom: calc(-15 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child) { margin-bottom: calc(-21 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child) { margin-bottom: calc(-28 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child) { margin-bottom: calc(-36 * var(--ks-toast-step)); }
-.ks-toast-wrapper--bottom-center:hover .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child),
-.ks-toast-wrapper--bottom-left:hover .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child),
-.ks-toast-wrapper--bottom-right:hover .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child) { margin-bottom: calc(-45 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(2):first-child) { margin-bottom: calc(-1 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(3):first-child) { margin-bottom: calc(-3 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(4):first-child) { margin-bottom: calc(-6 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(5):first-child) { margin-bottom: calc(-10 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(6):first-child) { margin-bottom: calc(-15 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(7):first-child) { margin-bottom: calc(-21 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(8):first-child) { margin-bottom: calc(-28 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(9):first-child) { margin-bottom: calc(-36 * var(--ks-toast-step)); }
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(.ks-toast:nth-last-child(n+10):first-child) { margin-bottom: calc(-45 * var(--ks-toast-step)); }
 
 /* ---------- Varyantlar: success, error, danger, warning, info, default ---------- */
 .ks-toast-container .ks-toast--success {
