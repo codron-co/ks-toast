@@ -9,7 +9,7 @@
 
 :root {
     --ks-toast-step: 8px;
-    /* 2+ yığında, genişletildiğinde (stack-expanded) flex gap */
+    /* 2+ yığında genişletildiğinde: konteyner row-gap (column + column-reverse) */
     --ks-toast-stack-gap: 18px;
     /* Tüm modallar, sticky header, drawer vb. üzerinde kalsın */
     --ks-toast-z-index: 2147483000;
@@ -168,9 +168,9 @@
 }
 
 /* Üst: 2+ yığın, genişletilmiş (JS: mouseenter) — tıklanabilir alan */
-.ks-toast-wrapper--top-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))),
-.ks-toast-wrapper--top-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))),
-.ks-toast-wrapper--top-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) {
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded:has(> .ks-toast-container > .ks-toast:nth-child(2)),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded:has(> .ks-toast-container > .ks-toast:nth-child(2)),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded:has(> .ks-toast-container > .ks-toast:nth-child(2)) {
     min-height: 70vh;
 }
 
@@ -346,24 +346,23 @@
 }
 
 /* 2+ toast, genişletilmiş (stack-expanded): flex gap, tam opak, 4. ve sonrası görünür */
-.ks-toast-wrapper--top-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--top-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(1) {
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(1),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(1),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(1) {
     transform: scale(1) translateY(0);
     opacity: 1;
     animation: ks-toast-in 0.4s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
 }
 
-.ks-toast-wrapper--top-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--top-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+2) {
-    margin-bottom: 0;
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+2),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+2),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+2) {
     opacity: 1;
 }
 
-.ks-toast-wrapper--top-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--top-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+4) {
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+4),
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+4),
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+4) {
     visibility: visible;
     max-height: 120px;
     overflow: visible;
@@ -371,42 +370,39 @@
     min-height: auto;
 }
 
-.ks-toast-wrapper--top-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container,
-.ks-toast-wrapper--top-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container,
-.ks-toast-wrapper--top-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container,
-.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container,
-.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container,
-.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container {
-    gap: var(--ks-toast-stack-gap);
+/* 2+ expanded: aralık sadece konteynerde gap/row-gap (alt/üst cift; margin toasts ile cakisirdi) */
+.ks-toast-wrapper.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) {
+    row-gap: var(--ks-toast-stack-gap);
+    column-gap: 0;
+    gap: var(--ks-toast-stack-gap) 0;
 }
 
-.ks-toast-wrapper--top-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast,
-.ks-toast-wrapper--top-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast,
-.ks-toast-wrapper--top-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast,
-.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast,
-.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast,
-.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast {
+.ks-toast-wrapper--top-center.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast,
+.ks-toast-wrapper--top-left.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast,
+.ks-toast-wrapper--top-right.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast,
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast,
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast,
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast {
     transform: scale(1) translateY(0);
 }
 
-.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(1),
-.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(1) {
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(1),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(1),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(1) {
     transform: scale(1) translateY(0);
     opacity: 1;
     animation: ks-toast-in-bottom 0.4s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
 }
 
-.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+2),
-.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+2) {
-    margin-bottom: 0;
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+2),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+2),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+2) {
     opacity: 1;
 }
 
-.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+4),
-.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded:has(> .ks-toast-container:has(> .ks-toast:nth-child(2))) .ks-toast-container .ks-toast:nth-last-child(n+4) {
+.ks-toast-wrapper--bottom-center.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+4),
+.ks-toast-wrapper--bottom-left.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+4),
+.ks-toast-wrapper--bottom-right.ks-toast--stack-expanded .ks-toast-container:has(> .ks-toast:nth-child(2)) .ks-toast:nth-last-child(n+4) {
     visibility: visible;
     max-height: 120px;
     overflow: visible;

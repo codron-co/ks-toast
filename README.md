@@ -4,6 +4,12 @@ Modüler toast bildirim kütüphanesi. Konum (üst/alt/sol/sağ), ses, fotoğraf
 
 **GitHub:** [codron-co/ks-toast](https://github.com/codron-co/ks-toast)
 
+## Kaynak (önemli)
+
+- Tüm kod değişikliği **yalnızca** bu repoda `dist/ks-toast.js` ve `dist/ks-toast.css` üzerinde yapılır.
+- Tüketen projedeki `vendor/.../ks-toast.*` **kopyadır**; orada düzenleme yapılmaz.
+- YSMERP’ye kopya almak: bu repo kökünde `.\scripts\sync-to-ysmerp.ps1` (veya YSMERP’de `scripts/sync-ks-toast-vendor.ps1` — aynı yön: `ks-toast/dist` → `ysmerp/.../vendor/ks-toast`).
+
 ### 1.0.1
 
 - **Ortalama:** `top-center` / `bottom-center` için `left: 50%` + `translateX(-50%)` kaldırıldı; `left`/`right` + yatay `margin: auto` (scrollbar / subpixel kayma riski azalır).
@@ -77,6 +83,8 @@ ks-toast
 ├─ dist
 │   ├─ ks-toast.js
 │   └─ ks-toast.css
+├─ scripts
+│   └─ sync-to-ysmerp.ps1
 ├─ README.md
 └─ package.json
 ```
