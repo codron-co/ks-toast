@@ -78,6 +78,7 @@
         }, true);
     }
 
+    /** relatedTarget sarmalayıcıda kaldıysa (toast’lar arası) leave sayılmaz. */
     function pointerExitedElement(el, e) {
         var to = e && e.relatedTarget;
         if (to == null) return true;
@@ -117,12 +118,10 @@
         if (!wrapper.hasAttribute('data-ks-toast-bound')) {
             wrapper.setAttribute('data-ks-toast-bound', '1');
             wrapper.addEventListener('mouseenter', function () {
-                wrapper._enterGen = (wrapper._enterGen | 0) + 1;
                 if (wrapper._leaveTimer) {
                     clearTimeout(wrapper._leaveTimer);
                     wrapper._leaveTimer = null;
                 }
-                wrapper.classList.add('ks-toast--stack-expanded');
                 var toasts = wrapper.querySelectorAll('.ks-toast');
                 for (var i = 0; i < toasts.length; i++) {
                     if (toasts[i]._timer) clearTimeout(toasts[i]._timer);
@@ -131,27 +130,18 @@
             });
             wrapper.addEventListener('mouseleave', function (e) {
                 if (!pointerExitedElement(wrapper, e)) return;
-                var g = (wrapper._enterGen | 0);
-                requestAnimationFrame(function () {
-                    if (g !== (wrapper._enterGen | 0)) return;
-                    requestAnimationFrame(function () {
-                        if (g !== (wrapper._enterGen | 0)) return;
-                        if (typeof wrapper.matches === 'function' && wrapper.matches(':hover')) return;
-                        wrapper.classList.remove('ks-toast--stack-expanded');
-                        var toasts = [].slice.call(wrapper.querySelectorAll('.ks-toast'));
-                        if (wrapper._leaveTimer) {
-                            clearTimeout(wrapper._leaveTimer);
-                            wrapper._leaveTimer = null;
-                        }
-                        wrapper._leaveTimer = setTimeout(function () {
-                            wrapper._leaveTimer = null;
-                            for (var i = 0; i < toasts.length; i++) {
-                                if (toasts[i]._timer) clearTimeout(toasts[i]._timer);
-                                hideToast(toasts[i]);
-                            }
-                        }, HOVER_LEAVE_DELAY);
-                    });
-                });
+                var toasts = [].slice.call(wrapper.querySelectorAll('.ks-toast'));
+                if (wrapper._leaveTimer) {
+                    clearTimeout(wrapper._leaveTimer);
+                    wrapper._leaveTimer = null;
+                }
+                wrapper._leaveTimer = setTimeout(function () {
+                    wrapper._leaveTimer = null;
+                    for (var i = 0; i < toasts.length; i++) {
+                        if (toasts[i]._timer) clearTimeout(toasts[i]._timer);
+                        hideToast(toasts[i]);
+                    }
+                }, HOVER_LEAVE_DELAY);
             });
         }
         var toastHost = getToastHostParent();
